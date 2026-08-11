@@ -1,0 +1,365 @@
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ==========================================
+   VARIABLES DE TEMA (Modo Claro / Oscuro)
+   ========================================== */
+:root {
+  --bg-main: #ffffff;
+  --bg-header: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f5f5f5;
+  --text-main: #000000;
+  --text-secondary: #4d5156;
+  --border-color: #eee;
+  --border-input: #ccc;
+  --link-color: #1a0dab;
+  --icon-color: #000000;
+}
+
+body.dark {
+  --bg-main: #121212;
+  --bg-header: #1e1e1e;
+  --bg-card: #222222;
+  --bg-input: #2a2a2a;
+  --text-main: #ffffff;
+  --text-secondary: #e8eaed;
+  --border-color: #333333;
+  --border-input: #555555;
+  --link-color: #8ab4f8;
+  --icon-color: #ffffff;
+}
+
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* ==========================================
+   ENCABEZADO Y NAVEGACIÓN
+   ========================================== */
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-header);
+  position: relative;
+}
+
+/* Botón menú hamburguesa */
+.menu-btn {
+  width: 32px;
+  height: 32px;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--icon-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Panel flotante de ajustes */
+.menu-panel {
+  position: absolute;
+  top: 55px;
+  left: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 100;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 230px;
+}
+
+.menu-title {
+  font-size: 14px;
+  font-weight: bold;
+  opacity: 0.8;
+  margin-bottom: 2px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.setting-item select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-input);
+  background: var(--bg-input);
+  color: var(--text-main);
+  outline: none;
+}
+
+.menu-btn-action {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #90D5FF;
+  color: #90D5FF;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.menu-btn-action:hover {
+  background: rgba(255, 77, 77, 0.15);
+}
+
+.menu-divider {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.menu-footer {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+/* ==========================================
+   SELECTORES DE AI / MOTOR DE BÚSQUEDA
+   ========================================== */
+.ai-select-wrap {
+  flex-shrink: 0;
+}
+
+.ai-select {
+  padding: 5px 15px 5px 7px;
+  max-width: 74px;
+  border-radius: 29px;
+  border: 1.5px solid var(--border-input);
+  background: var(--bg-input);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 28px;
+}
+
+.ai-select:hover {
+  border-color: var(--text-secondary);
+}
+
+/* Ajustes de selector e ícono de flecha para Modo Oscuro */
+body.dark .ai-select {
+  color-scheme: dark;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+}
+
+/* Forzar modo oscuro en selectores */
+body.dark select {
+  color-scheme: dark;
+}
+
+/* ==========================================
+   BARRA DE BÚSQUEDA
+   ========================================== */
+.search-wrap { 
+  flex: 1; 
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--border-input);
+  border-radius: 15px;
+  padding: 4px 10px;
+  max-width: 200px;
+  width: 100%;
+  background: var(--bg-input);
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 15px;
+  background: transparent;
+  color: var(--text-main);
+}
+
+/* Botón de enviar búsqueda (Anteriormente incognito) */
+.search-submit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.search-submit:hover {
+  opacity: 0.7;
+}
+
+.search-submit svg {
+  stroke: var(--icon-color);
+}
+
+/* ==========================================
+   LOGOS COMPARTIDOS (ORION LOGO)
+   ========================================== */
+.orion-logo {
+  stroke: var(--icon-color);
+  transition: opacity 0.2s ease;
+}
+
+/* Variación: Logo de la barra de búsqueda */
+.icon-small {
+  width: 22px;
+  height: 22px;
+}
+
+/* Variación: Logo central en Home */
+.logo-large {
+  width: 120px;
+  height: 140px;
+}
+
+/* ==========================================
+   HOME / BRAND
+   ========================================== */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 80px;
+  cursor: pointer;
+}
+
+.brand {
+  font-size: 28px;
+  letter-spacing: 6px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* ==========================================
+   RESULTADOS Y ARTÍCULOS
+   ========================================== */
+.resultados-container {
+  max-width: 700px;
+  width: 90%;
+  margin: 20px auto;
+}
+
+.result-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.result-thumb {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.result-body {
+  flex: 1;
+}
+
+.result-item a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.result-item a:hover {
+  text-decoration: underline;
+}
+
+.result-item p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.result-item span {
+  color: var(--text-secondary);
+  opacity: 0.5;
+  font-size: 12px;
+}
+
+.article-img {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 16px;
+  margin: 15px 0;
+  display: block;
+}
+
+.article-text {
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.btn-volver {
+  margin-bottom: 15px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-input);
+  background: var(--bg-input);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.wiki-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Clase de utilidad para ocultar elementos */
+.hidden {
+  display: none !important;
+}

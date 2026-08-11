@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- MODAL HISTORIAL UNICO - FIX -->
+<div id="historialModal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(10px); z-index:9999; display:flex; align-items:center; justify-content:center;">
+  <div style="background:var(--bg-card); width:92%; max-width:480px; max-height:82vh; border-radius:20px; overflow:hidden; display:flex; flex-direction:column; border:1px solid var(--border-input);">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 16px 12px 16px;">
+      <h3 style="margin:0; font-size:14px; letter-spacing:1px; color:var(--text-main);">HISTORIAL</h3>
+      <button onclick="document.getElementById('historialModal').style.display='none'; document.getElementById('historialModal').classList.add('hidden')" style="border:1px solid var(--border-input); background:var(--bg-input); color:var(--text-main); width:32px; height:32px; border-radius:8px; cursor:pointer;">✕</button>
+    </div>
+    <div style="display:flex; gap:8px; padding:0 16px 14px 16px; border-bottom:1px solid var(--border-input);">
+      <button onclick="renderHistorial('general')" id="tabGeneral" style="flex:1; padding:11px; border-radius:10px; border:1px solid var(--link-color); background:var(--link-color); color:white; font-weight:600; cursor:pointer; font-size:11px;">HISTORIAL GENERAL</button>
+      <button onclick="renderHistorial('likes')" id="tabLikes" style="flex:1; padding:11px; border-radius:10px; border:1px solid var(--border-input); background:var(--bg-input); color:var(--text-main); cursor:pointer; font-size:11px;">FAVORITOS</button>
+    </div>
+    <div id="listaHistorial" style="overflow-y:auto; padding:16px; flex:1; min-height:200px;"></div>
+    <div style="padding:16px; border-top:1px solid var(--border-input);">
+      <button onclick="borrarSoloGeneral()" style="width:100%; padding:12px; background:rgba(255,77,77,0.1); color:#ff6b6b; border:1px solid rgba(255,77,77,0.3); border-radius:12px; cursor:pointer; font-size:11px;">ELIMINAR HISTORIAL GENERAL</button>
+      <p style="font-size:10px; text-align:center; margin-top:10px; opacity:0.5;">Los favoritos se conservaran</p>
+    </div>
+  </div>
+</div>
+  <title>ORION</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+  <!-- BARRA SUPERIOR ÚNICA (HEADER) -->
+  <header class="top">
+    <!-- 1. Menú de Ajustes Hamburguesa -->
+    <button type="button" class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
+
+    <!-- Panel flotante de Ajustes -->
+    <div id="menuPanel" class="menu-panel hidden">
+      <h4 class="menu-title">Ajustes de ORION</h4>
+      
+      <label class="setting-item">
+        <span>Modo oscuro</span>
+        <input type="checkbox" id="darkToggle">
+      </label>
+
+      <label class="setting-item">
+        <span>Fuente</span>
+        <select id="fontSelect">
+          <option value="10px">Pequeña</option>
+          <option value="20px" selected>Normal</option>
+          <option value="30px">Grande</option>
+        </select>
+      </label>
+
+      <label class="setting-item">
+        <span>Idioma</span>
+        <select id="langSelect">
+          <option value="es" selected>Español</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </label>
+
+      <button type="button" id="clearHistoryBtn" class="menu-btn-action">
+        historial
+      </button>
+
+      <hr class="menu-divider">
+
+      <div class="menu-footer">
+        <span>ORION v1.0</span>
+        <small>Created by Orion</small>
+      </div>
+    </div>
+
+    <!-- 2. Menú de AI / Motores de Búsqueda -->
+    <div class="ai-select-wrap">
+      <select id="aiEngineSelect" class="ai-select">
+        <option value="wikipedia">Wikipedia</option>
+        <option value="orionai">ORION AI</option>
+        <option value="maths">Maths</option>
+      </select>
+    </div>
+
+    <!-- 3. Barra de búsqueda -->
+    <div class="search-wrap">
+      <form class="search-bar" id="orionForm" autocomplete="off">
+        <!-- Logo pequeño interactivo -->
+        <svg id="smallLogo" class="orion-logo icon-small" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="cursor: pointer;">
+          <circle cx="50" cy="50" r="32" />
+          <line x1="18" y1="35" x2="82" y2="90" />
+          <rect x="47" y="8" width="10" height="84" />
+        </svg>
+        
+        <input type="text" id="q" placeholder="Buscar en ORION" autocomplete="off">
+        
+        <!-- Botón de búsqueda (Cambiado a clase 'search-submit' para evitar confusión) -->
+        <button type="submit" class="search-submit" aria-label="Buscar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <!-- PANTALLA PRINCIPAL (HOME) -->
+  <main>
+    <div class="center" id="home">
+      <!-- Logo principal reutilizando la misma estructura -->
+      <svg class="orion-logo logo-large" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <circle cx="50" cy="50" r="32" />
+        <line x1="18" y1="35" x2="82" y2="90" />
+        <rect x="47" y="8" width="10" height="84" />
+      </svg>
+      <div class="brand">ORION</div>
+    </div>
+
+    <!-- CONTENEDOR DE RESULTADOS -->
+    <div id="resultados" class="resultados-container hidden"></div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
