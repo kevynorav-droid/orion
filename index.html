@@ -104,7 +104,15 @@
           </svg>
         </button>
       </form>
-    </div>
+<div class="modo-wrap">
+  <button class="modo-btn" onclick="toggleModo()">Modo ▾</button>
+  <div id="modoMenu" class="modo-menu">
+    <a href="#" onclick="setModo('alumno')">🎓 Alumno</a>
+    <a href="#" onclick="setModo('trabajador')">💼 Trabajador</a>
+    <a href="#" onclick="setModo('ocio')">🎮 Ocio</a>
+  </div>
+  </div>
+  </div>
   </header>
 
 
@@ -126,5 +134,22 @@
   </main>
 
   <script src="app.js"></script>
+  <style>
+.modo-wrap{position:relative; display:inline-block; margin-left:8px;}
+.modo-btn{background:#fff; border:1px solid #ddd; padding:8px 14px; border-radius:20px; cursor:pointer; font-weight:bold;}
+.modo-menu{display:none; position:absolute; top:40px; right:0; background:white; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.15); min-width:160px; z-index:99;}
+.modo-menu a{display:block; padding:10px 15px; text-decoration:none; color:#000;}
+.modo-menu a:hover{background:#f0f0f0;}
+.show{display:block !important;}
+</style>
+
+<script>
+function toggleModo(){ document.getElementById("modoMenu").classList.toggle("show"); }
+function setModo(m){
+  alert("Modo " + m + " activado");
+  localStorage.setItem("modoORION", m);
+  document.getElementById("modoMenu").classList.remove("show");
+}
+</script>
 </body>
 </html>
