@@ -340,6 +340,24 @@ body.dark select {
   white-space: pre-wrap;
 }
 
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+#q {
+  padding-right: 45px !important; /* espacio para la lupa */
+  width: 100%;
+}
+.search-submit {
+  position: absolute !important;
+  right: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+}
 .btn-volver {
   margin-bottom: 15px;
   padding: 6px 14px;
