@@ -159,5 +159,30 @@ document.addEventListener('click', function(e){
   }
 });
 </script>
+  <script>
+function toggleModo(){
+  var m=document.getElementById('modoMenu');
+  m.style.display = (m.style.display==='block') ? 'none' : 'block';
+}
+function setModo(m){
+  localStorage.setItem('orion_modo',m);
+  document.getElementById('modoMenu').style.display='none';
+}
+
+document.getElementById('orionForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var q=document.getElementById('q').value;
+  var engine=document.getElementById('aiEngineSelect').value;
+  if(!q) return;
+  
+  if(engine==='duckduckgo'){
+    window.open('https://duckduckgo.com/?q='+encodeURIComponent(q), '_blank');
+  } else if(engine==='google'){
+    window.open('https://www.google.com/search?q='+encodeURIComponent(q), '_blank');
+  } else {
+    window.open('https://es.wikipedia.org/wiki/'+encodeURIComponent(q), '_blank');
+  }
+});
+</script>
 </body>
 </html>
