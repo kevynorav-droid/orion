@@ -1,6 +1,6 @@
 var historialArticulos = [];
 window.respaldoResultadosHTML = "";
-// RECOMENDACIÓN: Guarda tus llaves de forma segura en un entorno Backend (.env)
+
 const GROQ_API_KEY = "TU_API_KEY_AQUI";
 const SERPER_API_KEY = "9256ee57a3b6d0120d292b852d67a1b2f7246bba";
 
