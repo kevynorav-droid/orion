@@ -381,3 +381,50 @@ body.dark select {
 .hidden {
   display: none !important;
 }
+
+/* FIX MODO A LA DERECHA */
+.search-wrap{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+#orionForm{
+  flex:1 !important;
+}
+.modo-wrap{
+  position:relative !important;
+}
+.modo-menu{
+  display:none;
+  position:absolute;
+  top:40px;
+  right:0;
+  background:white;
+  border-radius:12px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.15);
+  min-width:160px;
+  z-index:999;
+  overflow:hidden;
+}
+.modo-menu a{
+  display:block;
+  padding:10px 15px;
+  text-decoration:none;
+  color:black;
+}
+.modo-menu a:hover{
+  background:#f0f0f0;
+}
+.modo-btn{
+  background:white;
+  border:1px solid #ddd;
+  padding:7px 14px;
+  border-radius:20px;
+  font-weight:bold;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.show{
+  display:block !important;
+}
