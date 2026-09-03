@@ -135,5 +135,28 @@
   <script src="app.js"></script>
   
 </script>
+  <script>
+function toggleModo(){
+  var menu = document.getElementById('modoMenu');
+  if(menu.style.display === 'block'){
+    menu.style.display = 'none';
+  } else {
+    menu.style.display = 'block';
+  }
+}
+function setModo(modo){
+  localStorage.setItem('orion_modo', modo);
+  document.getElementById('modoMenu').style.display = 'none';
+  alert('Modo cambiado a: ' + modo);
+}
+// Si le picas fuera, se cierra
+document.addEventListener('click', function(e){
+  var wrap = document.querySelector('.modo-wrap');
+  var menu = document.getElementById('modoMenu');
+  if(!wrap.contains(e.target)){
+    menu.style.display = 'none';
+  }
+});
+</script>
 </body>
 </html>
