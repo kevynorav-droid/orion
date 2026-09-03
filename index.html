@@ -85,7 +85,7 @@
     </div>
 
     <!-- 3. Barra de búsqueda -->
-    <div class="search-wrap">
+    <div class="search-wrap" style="display:flex; align-items:center; gap:10px;">
       <form class="search-bar" id="orionForm" autocomplete="off">
         <!-- Logo pequeño interactivo -->
         <svg id="smallLogo" class="orion-logo icon-small" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="cursor: pointer;">
@@ -104,9 +104,9 @@
           </svg>
         </button>
       </form>
-<div class="modo-wrap">
+<div class="modo-wrap" style="position:relative;">
   <button class="modo-btn" type="button" onclick="toggleModo()">Modo ▾</button>
-  <div id="modoMenu" class="modo-menu">
+ <div id="modoMenu" class="modo-menu" style="display:none; position:absolute; top:38px; right:0; background:white; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.15); min-width:150px; z-index:999;">
     <a href="#" onclick="setModo('alumno')">Alumno</a>
     <a href="#" onclick="setModo('trabajador')">Trabajador</a>
     <a href="#" onclick="setModo('ocio')">Ocio</a>
