@@ -105,6 +105,17 @@
         </button>
       </form>
 <div class="modo-wrap">
+  <button class="modo-btn" type="button" onclick="toggleModo()">Modo ▾</button>
+  <div id="modoMenu" class="modo-menu">
+    <a href="#" onclick="setModo('alumno')">Alumno</a>
+    <a href="#" onclick="setModo('trabajador')">Trabajador</a>
+    <a href="#" onclick="setModo('ocio')">Ocio</a>
+  </div>
+</div>
+
+
+      
+<div class="modo-wrap">
   <button class="modo-btn" onclick="toggleModo()">Modo ▾</button>
   <div id="modoMenu" class="modo-menu">
     <a href="#" onclick="setModo('alumno')">🎓 Alumno</a>
