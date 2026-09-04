@@ -164,7 +164,7 @@ body {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://w3.org"><path d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 8px center;
   background-size: 16px;
@@ -178,7 +178,7 @@ body {
 /* Ajustes de selector e ícono de flecha para Modo Oscuro */
 body.dark .ai-select {
   color-scheme: dark;
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://w3.org"><path d="M7 10l5 5 5-5z"/></svg>');
 }
 
 /* Forzar modo oscuro en selectores */
@@ -200,10 +200,11 @@ body.dark select {
   border: 1.5px solid var(--border-input);
   border-radius: 15px;
   padding: 4px 10px;
-  max-width: 200px;
+  max-width: 200px; /* <- Cambia de 200px a 260px para darle espacio a la lupa */
   width: 100%;
   background: var(--bg-input);
 }
+
 
 .search-bar input {
   border: none;
@@ -340,24 +341,6 @@ body.dark select {
   white-space: pre-wrap;
 }
 
-.search-bar {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-#q {
-  padding-right: 45px !important; /* espacio para la lupa */
-  width: 100%;
-}
-.search-submit {
-  position: absolute !important;
-  right: 8px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  background: transparent !important;
-  border: none !important;
-  cursor: pointer;
-}
 .btn-volver {
   margin-bottom: 15px;
   padding: 6px 14px;
@@ -382,49 +365,59 @@ body.dark select {
   display: none !important;
 }
 
-/* FIX MODO A LA DERECHA */
-.search-wrap{
-  display:flex !important;
-  flex-direction:row !important;
-  align-items:center !important;
-  gap:10px !important;
+/* ==========================================
+   ESTILOS PARA EL MENÚ DESPLEGABLE DE MODOS
+   ========================================== */
+.modo-menu {
+  display: none;
+  position: absolute;
+  top: 38px;
+  right: 0;
+  background: rgba(30, 30, 30, 0.75) !important; /* Fondo oscuro translúcido */
+  backdrop-filter: blur(10px); /* Efecto de desenfoque moderno */
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+  min-width: 140px;
+  z-index: 999;
+  overflow: hidden;
+  padding: 4px 0;
 }
-#orionForm{
-  flex:1 !important;
+
+/* Forzar estilos correctos en modo oscuro activo */
+body.dark .modo-menu {
+  background: rgba(22, 22, 22, 0.85) !important;
+  border-color: #333;
 }
-.modo-wrap{
-  position:relative !important;
+
+/* Enlaces del menú desplegable */
+.modo-menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #ffffff !important; /* Texto blanco */
+  text-decoration: none !important; /* Quita el subrayado feo */
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  text-align: left;
 }
-.modo-menu{
-  display:none;
-  position:absolute;
-  top:40px;
-  right:0;
-  background:white;
-  border-radius:12px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.15);
-  min-width:160px;
-  z-index:999;
-  overflow:hidden;
+
+/* Efecto al pasar el dedo o el cursor */
+.modo-menu a:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
 }
-.modo-menu a{
-  display:block;
-  padding:10px 15px;
-  text-decoration:none;
-  color:black;
-}
-.modo-menu a:hover{
-  background:#f0f0f0;
-}
-.modo-btn{
-  background:white;
-  border:1px solid #ddd;
-  padding:7px 14px;
-  border-radius:20px;
-  font-weight:bold;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.show{
-  display:block !important;
+
+/* Ajuste fino al botón "Modo" para que combine */
+.modo-btn {
+  background: var(--bg-input);
+  color: var(--text-main);
+  border: 1px solid var(--border-input);
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.2s;
 }
