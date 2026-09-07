@@ -346,20 +346,32 @@ form.addEventListener('submit', async (e) => {
  }
 
  // === MOTOR: DUCKDUCKGO (API OFICIAL - CORREGIDO) ===
- if (engine === 'duckduckgo') {
+if (engine === 'duckduckgo') {
   home.classList.add('hidden');
   resultadosDiv.classList.remove('hidden');
   resultadosDiv.innerHTML = `<p class="loading-text">Buscando <b>${q}</b> en la web con DuckDuckGo...</p>`;
-  
+
   try {
-    const resp = await fetch(`https://duckduckgo.com{encodeURIComponent(q)}&format=json&skip_disambig=1&origin=*`);
-    
-    if (!resp.ok) throw new Error("No se pudo conectar con la API de DuckDuckGo.");
-    
+    // 1. CORREGIDO: URL con api.duckduckgo.com, ?q= y sintaxis de interpolación ${}
+    const resp = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(q)}&format=json&skip_disambig=1&origin=*`);
+
+    if (!resp.ok) throw new Error("No se pudo conectar con DuckDuckGo.");
+
     const data = await resp.json();
     const temas = data.RelatedTopics || [];
-    
-    if (temas.length === 0) {
+
+    // 2. MEJORA: Aplanar temas si vienen agrupados en subcategorías (Topics)
+    const listaLimpia = [];
+    temas.forEach(item => {
+      if (item.Topics) {
+        // Si el tema contiene subtemas, los extraemos
+        listaLimpia.push(...item.Topics);
+      } else if (item.Text && item.FirstURL) {
+        listaLimpia.push(item);
+      }
+    });
+
+    if (listaLimpia.length === 0) {
       resultadosDiv.innerHTML = `
         <button class="btn-volver" onclick="volverAlInicio()">← Volver</button>
         <p style="margin-top:15px; text-align:center;">No se encontraron resultados para esta búsqueda.</p>
@@ -372,11 +384,11 @@ form.addEventListener('submit', async (e) => {
       <h3 style="margin-top:15px; margin-bottom:20px;">Resultados para "${q}":</h3>
     `;
 
-    temas.forEach(item => {
+    listaLimpia.forEach(item => {
       if (item.Text && item.FirstURL) {
         const partes = item.Text.split(' - ');
         const tituloLimpio = partes[0] || "Resultado";
-        const snippetLimpio = partes[1] || item.Text;
+        const snippetLimpio = partes.slice(1).join(' - ') || item.Text;
         const urlReal = item.FirstURL;
 
         const tarjeta = document.createElement('article');
@@ -392,7 +404,14 @@ form.addEventListener('submit', async (e) => {
         resultadosDiv.appendChild(tarjeta);
       }
     });
-
+  } catch (err) {
+    console.error("Error en DuckDuckGo:", err);
+    resultadosDiv.innerHTML = `
+      <button class="btn-volver" onclick="volverAlInicio()">← Volver</button>
+      <p style="margin-top:15px; color:red; text-align:center;">Ocurrió un error al cargar los resultados de DuckDuckGo.</p>
+    `;
+  }
+}
   } catch (err) {
     resultadosDiv.innerHTML = `
       <button class="btn-volver" onclick="volverAlInicio()">← Volver</button>
