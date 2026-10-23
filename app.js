@@ -1,5 +1,4 @@
-217
-// ORION 0.1 - NAVEGADOR REAL QUE ABRE TODO
+// ORION 0.2 - 
 let historialArticulos = [];
 window.respaldoResultadosHTML = "";
 let paginasRespaldadasMemoria = [];
