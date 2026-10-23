@@ -1,0 +1,93 @@
+<!-- ORION 0.1 - FINAL WEBKIT -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORION</title>
+  <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+  <header class="top">
+    <button type="button" class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
+    <div id="menuPanel" class="menu-panel hidden">
+      <h4 class="menu-title">Ajustes de ORION</h4>
+      <label class="setting-item"><span>Modo oscuro</span><input type="checkbox" id="darkToggle"></label>
+      <label class="setting-item"><span>Fuente</span><select id="fontSelect"><option value="10px">Pequeña</option><option value="20px" selected>Normal</option><option value="30px">Grande</option></select></label>
+      <label class="setting-item"><span>Idioma</span><select id="langSelect"><option value="es">Español</option><option value="en">English</option><option value="fr">Français</option></select></label>
+      <label class="setting-item"><span>Modo</span><select id="modoSelect"><option value="alumno">Alumno</option><option value="trabajador">Trabajador</option><option value="ocio">Ocio</option></select></label>
+      <button type="button" id="clearHistoryBtn" class="menu-btn-action">Ver Historial</button>
+      <hr class="menu-divider">
+      <div class="menu-footer"><span>ORION v2.0</span><small>Created by Orion</small></div>
+    </div>
+
+    <div class="ai-select-wrap">
+      <select id="aiEngineSelect" class="ai-select ai-select-small">
+        <option value="web" selected>WEB</option> 
+        <option value="wikipedia">WIKI</option>
+      </select>
+    </div>
+
+    <div class="search-wrap">
+      <form class="search-bar" id="orionForm" autocomplete="off">
+        <svg id="smallLogo" class="orion-logo icon-small" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="cursor: pointer; flex-shrink: 0;">
+          <circle cx="50" cy="50" r="32" />
+          <line x1="18" y1="35" x2="82" y2="90" />
+          <rect x="47" y="8" width="10" height="84" />
+        </svg>
+        <input type="text" id="q" placeholder="Buscar en Orion..." autocomplete="off" required>
+        <button type="submit" class="search-btn minimal" aria-label="Buscar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <div class="center" id="home">
+      <svg class="orion-logo logo-large" viewBox="0 0 100 120" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <circle cx="50" cy="50" r="32" />
+        <line x1="18" y1="35" x2="82" y2="90" />
+        <rect x="47" y="8" width="10" height="84" />
+      </svg>
+      <div class="brand">ORION</div>
+    </div>
+    <div id="resultados" class="resultados-container hidden"></div>
+  </main>
+
+  <div id="historialModal" class="hidden modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header"><h3 class="modal-title">HISTORIAL</h3><button id="closeHistorialBtn" class="modal-close">✕</button></div>
+      <div class="modal-tabs"><button id="tabGeneral" class="tab-btn active">HISTORIAL GENERAL</button><button id="tabLikes" class="tab-btn">FAVORITOS</button></div>
+      <div id="listaHistorial" class="modal-list"></div>
+      <div class="modal-footer"><button id="btnBorrarGeneral" class="btn-danger">ELIMINAR HISTORIAL GENERAL</button><p class="footer-note">Los favoritos se conservarán</p></div>
+    </div>
+  </div>
+
+  <script src="app.js?v=5"></script>
+  <script>
+    const closeHistorialBtn = document.getElementById('closeHistorialBtn');
+    const btnBorrarGeneral = document.getElementById('btnBorrarGeneral');
+    const tabGeneral = document.getElementById('tabGeneral');
+    const tabLikes = document.getElementById('tabLikes');
+    const modoSelect = document.getElementById('modoSelect');
+    if (modoSelect) {
+      const savedModo = localStorage.getItem('orion_modo');
+      if (savedModo) modoSelect.value = savedModo;
+      modoSelect.addEventListener('change', () => { localStorage.setItem('orion_modo', modoSelect.value); });
+    }
+    if(closeHistorialBtn) {
+      closeHistorialBtn.addEventListener('click', () => {
+        const m = document.getElementById('historialModal');
+        if(m) { m.classList.add('hidden'); m.style.display = 'none'; }
+      });
+    }
+    if(tabGeneral) tabGeneral.addEventListener('click', () => window.renderHistorial('general'));
+    if(tabLikes) tabLikes.addEventListener('click', () => window.renderHistorial('likes'));
+    if(btnBorrarGeneral) btnBorrarGeneral.addEventListener('click', () => window.borrarSoloGeneral());
+  </script>
+</body>
+</html>
