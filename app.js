@@ -1,4 +1,4 @@
-// ORION 0.2 - 
+// ORION 0.3 -
 let historialArticulos = [];
 window.respaldoResultadosHTML = "";
 let paginasRespaldadasMemoria = [];
@@ -159,7 +159,6 @@ function recomponerEventosEnlaces() {
   });
 }
 
-// BUSCADOR FINAL - WEB ABRE TODO
 if (form) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -170,22 +169,62 @@ if (form) {
     window.respaldoResultadosHTML = "";
     paginasRespaldadasMemoria = [];
 
-    // MODO WEB = NAVEGADOR REAL - ABRE TODAS LAS PAGINAS
     if (engine === 'web' || engine === 'duckduckgo') {
-      let url = q.trim();
-      // Si es URL directa: pornhub.com, youtube.com, tiktok.com, etc.
-      if (url.includes('.') && !url.includes(' ')) {
+      if (q.includes('.') && !q.includes(' ')) {
+        let url = q;
         if (!url.startsWith('http')) url = 'https://' + url;
-      } else {
-        // Si son palabras: gilbertona, banuska rusa, etc - busca en Google sin filtro
-        url = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+        window.location.href = url;
+        return;
       }
-      // Abre con WebKit gratis - abre TODO
-      window.location.href = url;
+      home.classList.add('hidden');
+      resultadosDiv.classList.remove('hidden');
+      resultadosDiv.innerHTML = `<p class="loading-text" style="text-align:center; padding:20px;">Buscando <b>${escapeHTML(q)}</b> en la web...</p>`;
+      try {
+        const duckUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(duckUrl)}`;
+        const resp = await fetch(proxyUrl);
+        const data = await resp.json();
+        const html = data.contents;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        let listaReal = [];
+        doc.querySelectorAll('.result').forEach(r => {
+          const a = r.querySelector('.result__a');
+          if (a && a.href) {
+            if (a.href.includes('/c/') || a.href.includes('duckduckgo.com/c/')) return;
+            listaReal.push({ title: a.innerText.trim(), url: a.href, snippet: r.querySelector('.result__snippet')?.innerText?.trim() || '' });
+          }
+        });
+        if (listaReal.length === 0) {
+          const resp2 = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(q)}&format=json&pretty=1`);
+          const data2 = await resp2.json();
+          (data2.RelatedTopics || []).forEach(item => {
+            if (item.Topics) {
+              item.Topics.forEach(t => {
+                if (t.FirstURL && !t.FirstURL.includes('/c/')) listaReal.push({ title: t.Text?.split(' - ')[0] || 'Resultado', url: t.FirstURL, snippet: t.Text || '' });
+              });
+            } else if (item.FirstURL && !item.FirstURL.includes('/c/')) {
+              listaReal.push({ title: item.Text?.split(' - ')[0] || 'Resultado', url: item.FirstURL, snippet: item.Text || '' });
+            }
+          });
+        }
+        if (listaReal.length === 0) {
+          resultadosDiv.innerHTML = `<button class="btn-volver" onclick="volverAlInicio()">← Volver</button><div style="text-align:center; padding:30px;"><h3>No hay resultados directos para "${escapeHTML(q)}"</h3><button onclick="window.location.href='https://www.google.com/search?q=${encodeURIComponent(q)}'" style="margin-top:15px; padding:12px 24px; border-radius:24px; border:1px solid var(--border-color); background:var(--bg-card); color:var(--text-main);">Abrir en Google</button></div>`;
+          return;
+        }
+        resultadosDiv.innerHTML = `<button class="btn-volver" onclick="volverAlInicio()">← Volver</button><h3 style="margin:15px 0;">Resultados web para "${escapeHTML(q)}":</h3>`;
+        listaReal.slice(0, 20).forEach(item => {
+          const tarjeta = document.createElement('article');
+          tarjeta.className = 'result-item';
+          tarjeta.innerHTML = `<div class="result-body"><a href="${escapeHTML(item.url)}" target="_blank" rel="noopener" style="color:var(--link-color); font-weight:600; font-size:16px; display:block; margin-bottom:4px;">${escapeHTML(item.title)}</a><p style="font-size:13px; opacity:0.8;">${escapeHTML(item.snippet || item.url)}</p><span style="font-size:11px; color:#4caf50; word-break:break-all;">${escapeHTML(item.url)}</span></div>`;
+          resultadosDiv.appendChild(tarjeta);
+        });
+      } catch (err) {
+        resultadosDiv.innerHTML = `<button class="btn-volver" onclick="volverAlInicio()">← Volver</button><div style="text-align:center; padding:20px;"><p style="color:#ff4d4d;">Error: ${escapeHTML(err.message)}</p><button onclick="window.location.href='https://www.google.com/search?q=${encodeURIComponent(q)}'" style="margin-top:15px; padding:10px 20px; border-radius:20px;">Abrir en Google</button></div>`;
+      }
       return;
     }
 
-    // MODO WIKI = LECTOR BONITO ORION
     if (engine === 'wikipedia') {
       home.classList.add('hidden');
       resultadosDiv.classList.remove('hidden');
